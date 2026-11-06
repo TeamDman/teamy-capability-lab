@@ -1,0 +1,54 @@
+{
+  "artifact": "synthetic-artifact",
+  "source": "desktop",
+  "target": "codex-instance-a",
+  "completeness": "Complete",
+  "candidates": [
+    {
+      "transfers": [
+        "upload",
+        "download"
+      ],
+      "estimated_cost": 4,
+      "approvals_needed": [],
+      "status": "Ready"
+    },
+    {
+      "transfers": [
+        "direct"
+      ],
+      "estimated_cost": 3,
+      "approvals_needed": [
+        "direct"
+      ],
+      "status": {
+        "ApprovalNeeded": {
+          "transfers": [
+            "direct"
+          ]
+        }
+      }
+    },
+    {
+      "transfers": [
+        "to-dot",
+        "from-dot"
+      ],
+      "estimated_cost": 2,
+      "approvals_needed": [],
+      "status": {
+        "Blocked": {
+          "reasons": [
+            {
+              "PermissionDenied": {
+                "transfer": "to-dot"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "execution_authorized": false,
+  "diagram": "demo\\alternatives.excalidraw"
+}

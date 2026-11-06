@@ -1,0 +1,36 @@
+PlanningReport {
+  artifact: "synthetic-artifact",
+  source: "desktop",
+  target: "codex-instance-a",
+  completeness: SearchCompleteness::Complete,
+  candidates: Vec<ValidatedRoute> [
+    ValidatedRoute {
+      transfers: Vec<String> ["upload", "download"],
+      estimated_cost: Option<u64>::Some(4),
+      approvals_needed: Vec<String>[],
+      status: RouteStatus::Ready,
+    },
+    ValidatedRoute {
+      transfers: Vec<String> ["direct"],
+      estimated_cost: Option<u64>::Some(3),
+      approvals_needed: Vec<String> ["direct"],
+      status: RouteStatus::ApprovalNeeded {
+        transfers: Vec<String> ["direct"],
+      },
+    },
+    ValidatedRoute {
+      transfers: Vec<String> ["to-dot", "from-dot"],
+      estimated_cost: Option<u64>::Some(2),
+      approvals_needed: Vec<String>[],
+      status: RouteStatus::Blocked {
+        reasons: Vec<BlockedReason> [
+          BlockedReason::PermissionDenied {
+            transfer: "to-dot",
+          },
+        ],
+      },
+    },
+  ],
+  execution_authorized: false,
+  diagram: Option<String>::None,
+}
