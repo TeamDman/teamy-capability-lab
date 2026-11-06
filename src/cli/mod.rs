@@ -1,8 +1,10 @@
+pub mod disclosure;
 pub mod facet_shape;
 pub mod global_args;
 pub mod output;
 pub mod plan;
 
+use crate::cli::disclosure::DisclosureArgs;
 use crate::cli::global_args::GlobalArgs;
 use crate::cli::output::CliOutput;
 use crate::cli::plan::PlanArgs;
@@ -52,6 +54,8 @@ impl Cli {
 pub enum Command {
     /// Assess synthetic candidate routes without execution.
     Plan(PlanArgs),
+    /// Assess one fictional identity and VM disclosure scenario.
+    Disclosure(DisclosureArgs),
 }
 
 impl Command {
@@ -60,6 +64,10 @@ impl Command {
     pub fn invoke(self, cancellation: &CancellationScope) -> eyre::Result<CliOutput> {
         match self {
             Self::Plan(args) => args.invoke(cancellation),
+            Self::Disclosure(args) => {
+                cancellation.bail_if_cancelled()?;
+                args.invoke()
+            }
         }
     }
 }

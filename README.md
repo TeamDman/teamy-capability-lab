@@ -1,6 +1,6 @@
 # Teamy Capability Lab
 
-**Offline experiment.** The default fixture, focused tests, local demo and full `check-all.ps1` quality gate have passed on Windows with Rust 1.96.0. The resolved lockfile records the dependency versions.
+**Offline experiment.** The original transfer fixture, focused tests, local demo and full `check-all.ps1` quality gate passed on Windows with Rust 1.96.0 at commit `d78960f`. The later identity/disclosure slice has also passed focused tests and the full quality gate. The resolved lockfile records the dependency versions.
 
 The experiment uses fixed, fictional data to compare directional routes for one artifact. It models a desktop, a Dot VM, a Codex environment definition, two distinct running Codex instances, and a store. The definition is not an instance. Endpoint-specific send, receive and processing capabilities, artifact identity, permissions and estimated costs are checked in Rust. Nothing discovers live capabilities, performs transfers, provisions a machine, calls a cloud service or obtains credentials. A plan does not authorize execution.
 
@@ -14,9 +14,13 @@ Run the CLI:
 cargo run -- --output-format text plan
 cargo run -- --output-format json plan
 cargo run -- --output-format json plan --excalidraw .\alternatives.excalidraw
+
+cargo run -- --output-format json disclosure
 ```
 
 The optional diagram path creates a new local file and refuses to overwrite one. It uses Cloud Terrastodon's public `ExcalidrawScene::from_objects` to show actual returned routes, estimated costs, status and search completeness. Local file errors or cancellation can leave a partial newly created file. The shared Teamy output layer supplies text and JSON; CSV is inherited but nested plans are intended for text or JSON. `--log-file` is another explicit local output option.
+
+An additional synthetic [identity and disclosure fixture](docs/identity-and-disclosure.md) models principal/device distinctions and one Jeff-tagged VM projection. Its focused tests and the full quality gate have passed. It is not an authorization or delegation system.
 
 ## Dependencies and boundaries
 
@@ -46,9 +50,13 @@ cargo test --test registry_integration
 cargo tree -i cloud_terrastodon_azure
 cargo tree -d
 cargo test --test planning
+cargo test --test identity_disclosure
+cargo test --test disclosure_cli
 cargo test --test plan_cli
 cargo run -- --output-format json plan
 cargo run -- --output-format json plan --excalidraw .\alternatives.excalidraw
+
+cargo run -- --output-format json disclosure
 cargo fmt --all -- --check
 cargo clippy --all-targets --all-features --no-deps -- -D warnings
 cargo build --all-features

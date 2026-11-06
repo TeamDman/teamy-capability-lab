@@ -1,5 +1,6 @@
 //! Typed synthetic state, bounded route enumeration and validation.
 
+pub mod identity;
 pub mod planner;
 pub mod visualization;
 
