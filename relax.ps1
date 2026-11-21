@@ -29,8 +29,13 @@ if (-not ((Test-Path -LiteralPath $runner -PathType Leaf) -and (Test-Path -Liter
             Invoke-SetupStep git @('-C', $source, 'checkout', '--quiet', '--detach', $revision)
         }
         # A build can be retried after the patch has already been applied.
-        & git -C $source apply --reverse --check -- $patch 2>$null
-        if ($LASTEXITCODE -ne 0) {
+        $alreadyPatched = & {
+            # Windows PowerShell reports the expected failed check on its error stream.
+            $ErrorActionPreference = 'Continue'
+            & git -C $source apply --reverse --check -- $patch 2>$null
+            $LASTEXITCODE -eq 0
+        }
+        if (-not $alreadyPatched) {
             Invoke-SetupStep git @('-C', $source, 'apply', '--', $patch)
         }
         Invoke-SetupStep cargo @('build', '--release', '--offline', '--manifest-path', (Join-Path $source 'Cargo.toml'), '--target-dir', $build, '-p', 'relax-runner', '--bin', 'relax')
