@@ -39,6 +39,20 @@ This project was initialized from [Teamy Rust CLI](https://github.com/TeamDman/t
 
 Cloud Terrastodon declares LiLiQ-R-1.1 in its workspace manifest. Its registry and Excalidraw crates are linked dependencies, not copied implementation. The synthetic Excalidraw scene was generated using its scene API and retains the generator's source field; whether the generated scene has separate license obligations has not been independently determined. Scryer Prolog 0.10.0 declares BSD-3-Clause and is also a dependency. `Cargo.lock` identifies the resolved third-party packages; their own licenses apply independently of the project license.
 
+## Run Capability Lab with Relax
+
+From the repository root on Windows x64, run the registry test or either CLI fixture. Quote the argument separator so PowerShell passes it to Relax.
+
+```powershell
+.\relax.ps1 test --allow-c teamy-capability-lab --test registry_integration
+.\relax.ps1 run --quiet --allow-c teamy-capability-lab '--' --output-format json disclosure
+.\relax.ps1 run --quiet --allow-c teamy-capability-lab '--' --output-format json plan
+```
+
+The launcher fetches the pinned Makepad Relax sources, applies [the compiler patch](patches/relax.patch), and builds the runner under `target/relax-tool`. The patch handles LinkMe's wrapped section attributes and the argument files Cargo uses for long Windows compiler commands. Later runs reuse that build. Cargo continues to resolve the lab's dependencies from its own lockfile.
+
+Relax targets the Windows GNU ABI. Install the Rust standard library for that target with `rustup target add x86_64-pc-windows-gnu`. Put the x86-64 LLVM-MinGW `bin` directory on `PATH`, or extract the toolchain so that `target/llvm-mingw/bin` contains `cc.exe` and `windres.exe`. The lab's Scryer Prolog dependency uses `ring`, and `--allow-c` lets Relax build its native code.
+
 ## Validation
 
 The full quality gate passed with one Cargo job and one test thread. To reproduce it and the focused checks:
