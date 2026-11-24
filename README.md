@@ -49,7 +49,9 @@ From the repository root on Windows x64, run the registry test or either CLI fix
 .\relax.ps1 run --quiet --allow-c teamy-capability-lab '--' --output-format json plan
 ```
 
-The launcher fetches the pinned Makepad Relax sources, applies [the compiler patch](patches/relax.patch), and builds the runner under `target/relax-tool`. The patch handles LinkMe's wrapped section attributes and the argument files Cargo uses for long Windows compiler commands. Later runs reuse that build. Cargo continues to resolve the lab's dependencies from its own lockfile.
+The launcher reads the Makepad fork and commit from `[package.metadata.relax]` in [Cargo.toml](Cargo.toml). On first use it fetches that revision and builds the Relax runner under `target/relax-tool`. Later runs reuse the checkout and binary. To change compiler versions, update the full commit SHA in `rev`.
+
+This revision handles the wrapped section attributes LinkMe uses to register entries and the argument files Cargo uses for long Windows compiler commands.
 
 Relax targets the Windows GNU ABI. Install the Rust standard library for that target with `rustup target add x86_64-pc-windows-gnu`. Put the x86-64 LLVM-MinGW `bin` directory on `PATH`, or extract the toolchain so that `target/llvm-mingw/bin` contains `cc.exe` and `windres.exe`. The lab's Scryer Prolog dependency uses `ring`, and `--allow-c` lets Relax build its native code.
 

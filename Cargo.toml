@@ -11,6 +11,9 @@ readme = "README.md"
 keywords = ["cli", "planning"]
 categories = ["command-line-utilities"]
 
+[package.metadata.relax]
+git = "https://github.com/TeamDman/makepad.git"
+rev = "79f54340fb239f612bb6634a4be3b3e6303995a5"
 
 [dependencies]
 linkme = "0.3.36"
